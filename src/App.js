@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     const getLocations = async () => {
       const resPendingLocations = await pendingLocationsService.getAll();
-      setPendingLocations([...pendingLocations, ...resPendingLocations]);
+      setPendingLocations(pendingLocations.concat(resPendingLocations));
       const resLocations = await locationsService.getLocations();
       setLocations(locations.concat(resLocations));
     };
@@ -24,22 +24,37 @@ const App = () => {
 
   const setValidation = (location) => {
     console.log(location);
-    setPendingLocations(pendingLocations.filter((pendingLocation) => pendingLocation === location));
-
+    setPendingLocations(
+      pendingLocations.filter((pendingLocation) => pendingLocation.name !== location.name)
+    );
     setLocations(locations.concat(location));
+  };
+
+  const rejectPendingLocation = async (location) => {
+    setPendingLocations(
+      pendingLocations.filter((pendingLocation) => pendingLocation.name !== location.name)
+    );
+  };
+
+  const deleteLocation = async (location) => {
+    setLocations(locations.filter((loc) => loc.name !== location.name));
   };
 
   return (
     <div className="App">
       <Navigation />
-      <Grid container>
-        <PendingLocations
-          setValidation={setValidation}
-          pendingLocations={pendingLocations}
-          label="Locations to approve"
-          buttonLabel="Validate"
-        />
-        <Locations locations={locations} />
+      <Grid className="container" container>
+        <Grid className="pending" item xs={5}>
+          <PendingLocations
+            setValidation={setValidation}
+            pendingLocations={pendingLocations}
+            rejectPendingLocation={rejectPendingLocation}
+          />
+        </Grid>
+
+        <Grid className="locations" item xs={5}>
+          <Locations locations={locations} deleteLocation={deleteLocation} />
+        </Grid>
       </Grid>
     </div>
   );

@@ -8,7 +8,9 @@ const Navigation = () => {
       width: '100%',
       heigth: '20vh',
       backgroundColor: '#85cad4',
-      padding: '5rem',
+      padding: '1rem',
+      fontSize: '1rem',
+      color: '#fff',
     },
     login: {
       // backgroundColor: '#fff',
@@ -16,8 +18,10 @@ const Navigation = () => {
   };
 
   return (
-    <Grid container xs={12}>
-        <Paper item className="navigation-container" style={styles.container}>Hallintanäkymä</Paper>
+    <Grid container>
+        <Paper className="navigation-container" style={styles.container}>
+          <h1>Lähin vessa</h1>
+        </Paper>
         {/* <Paper>Kirjautuminen</Paper> */}
     </Grid>
   );

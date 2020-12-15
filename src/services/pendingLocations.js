@@ -1,20 +1,28 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = '/api/locations';
+// const baseUrl = 'http://localhost:3001/api/locations';
 
 const getAll = async () => {
-  const response = await axios.get(`${baseUrl}/pending-locations`);
+  const response = await axios.get(`${baseUrl}/pending`);
   return response.data;
 };
 
 const updateLocation = async (location) => {
-  const response = await axios.post(baseUrl, location)
+  const response = await axios.post(baseUrl, location);
   return response.data;
-}
+};
 
-const validateLocation = async (location) => {
-  const response = await axios.delete(`${baseUrl}/pending-locations/${location._id}`)
+const deleteLocation = async (location) => {
+  const response = await axios.delete(`${baseUrl}/pending/${location.id}`);
   return response.data;
-}
+};
 
-export default { getAll, updateLocation, validateLocation };
+
+const exports = {
+  getAll,
+  updateLocation,
+  deleteLocation,
+};
+
+export default exports;
