@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = '/api/locations';
+const baseUrl = process.REACT_APP_API_ENDPOINT;
 // const baseUrl = 'http://localhost:3001/api/locations';
 
 const getLocations = async () => {
