@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Login from './Login';
 import Navigation from './components/Navigation';
 import PendingLocations from './components/PendingLocations';
 import Locations from './components/Locations';
@@ -11,6 +13,7 @@ import './App.css';
 const App = () => {
   const [pendingLocations, setPendingLocations] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const getLocations = async () => {
@@ -40,22 +43,33 @@ const App = () => {
     setLocations(locations.filter((loc) => loc.name !== location.name));
   };
 
+  const handleUser = (userLogginIn) => {
+    setUser(userLogginIn);
+  };
+
   return (
     <div className="App">
       <Navigation />
-      <Grid className="container" container>
-        <Grid className="pending" item xs={5}>
-          <PendingLocations
-            setValidation={setValidation}
-            pendingLocations={pendingLocations}
-            rejectPendingLocation={rejectPendingLocation}
-          />
-        </Grid>
+        <Route path="/" exact>
+          <Login handleUser={handleUser} />
+        </Route>
+        <Route path="/admin">
+          {user && user.role === 'admin' ? (
+            <Grid className="container" container>
+              <Grid className="pending" item xs={5}>
+                <PendingLocations
+                  setValidation={setValidation}
+                  pendingLocations={pendingLocations}
+                  rejectPendingLocation={rejectPendingLocation}
+                />
+              </Grid>
 
-        <Grid className="locations" item xs={5}>
-          <Locations locations={locations} deleteLocation={deleteLocation} />
-        </Grid>
-      </Grid>
+              <Grid className="locations" item xs={5}>
+                <Locations locations={locations} deleteLocation={deleteLocation} />
+              </Grid>
+            </Grid>
+          ) : null}
+        </Route>
     </div>
   );
 };
